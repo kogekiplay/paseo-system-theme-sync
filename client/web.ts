@@ -47,7 +47,8 @@ export interface SyncController {
 const SETTINGS_KEY = "@paseo:app-settings";
 const LEGACY_KEY = "@paseo:settings";
 const OWNER = Symbol.for("paseo.system-theme-sync.owner");
-// Registered theme names in Paseo 0.15.4. Never touch unrelated root classes.
+// Registered theme names verified in Paseo 0.15.4 and 0.16.0.
+// Never touch unrelated root classes.
 const THEME_CLASSES = [
   "light", "dark", "darkZinc", "darkMidnight", "darkClaude", "darkGhostty",
   "darkPureBlack", "pluginLight", "pluginDark",

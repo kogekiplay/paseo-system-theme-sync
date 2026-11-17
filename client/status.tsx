@@ -32,7 +32,7 @@ export function createStatusScreen(controller: SyncController) {
             <Text style={{ color: colors.accentForeground, fontSize: 14 }}>立即检查</Text>
           </Pressable>
           <Text style={muted}>
-            修复 Paseo 0.15.4 中固定主题切回系统后，根节点主题类覆盖系统配色的问题。
+            修复 Paseo 0.15.4 和 0.16.0 中固定主题切回系统后，根节点主题类覆盖系统配色的问题。
             仅在跟随系统时清理残留类；本插件在当前客户端本地运行。
           </Text>
         </View>
