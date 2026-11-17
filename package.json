@@ -1,0 +1,44 @@
+{
+  "name": "paseo-system-theme-sync",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "kogekiplay",
+  "homepage": "https://github.com/kogekiplay/paseo-system-theme-sync#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kogekiplay/paseo-system-theme-sync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kogekiplay/paseo-system-theme-sync/issues"
+  },
+  "files": [
+    "paseo-plugin.json",
+    "OVERVIEW.md",
+    "OVERVIEW.*.md",
+    "index.client.ts",
+    "index.client.tsx",
+    "index.server.ts",
+    "index.server.tsx",
+    "client/",
+    "server/",
+    "shared/",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@getpaseo/plugin": "0.15.4",
+    "@tanstack/react-query": "^5.90.11",
+    "@types/react": "~19.2.0",
+    "jsdom": "^31.0.1",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0",
+    "zod": "^4.4.3"
+  },
+  "description": "Keep Paseo light/dark backgrounds synchronized with the system appearance."
+}
