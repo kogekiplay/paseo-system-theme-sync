@@ -8,10 +8,15 @@ The same Metro module 307 was extracted from the installed Paseo 0.16.0 app:
 
 `/Applications/Paseo.app/Contents/Resources/app-dist/_expo/static/js/web/index-a000449d8160da8a3142ccfab0cf1346.js`
 
-Its source matches this fixture byte for byte after trimming surrounding whitespace. Both versions have SHA-256 `95cadacc13f2c791daf5b1004509b81207ef46d88de3c9c93af729359964ca4b` for that trimmed module. The regression tests therefore cover the actual runtime shipped in both releases without duplicating the fixture. Paseo's `AppearanceProvider` is also unchanged between these releases, and its theme names and settings storage key were rechecked for 0.16.0.
+Paseo 0.17.1 also bundles the same module:
+
+`/Applications/Paseo.app/Contents/Resources/app-dist/_expo/static/js/web/index-e708bf7cb3ef31b35d0c400720135800.js`
+
+All three releases match this fixture byte for byte after trimming surrounding whitespace, with SHA-256 `95cadacc13f2c791daf5b1004509b81207ef46d88de3c9c93af729359964ca4b`. The regression suite exercises the runtime shipped in all three releases with a single fixture. The 0.17.1 bundle still calls `setAdaptiveThemes(true)` for System and uses the same theme names and settings storage key.
 
 Upstream sources:
 
 - https://github.com/getpaseo/paseo/blob/v0.15.4/packages/app/src/appearance/provider.tsx
 - https://github.com/getpaseo/paseo/blob/v0.16.0/packages/app/src/appearance/provider.tsx
+- https://github.com/getpaseo/paseo/blob/v0.17.1/packages/app/src/appearance/provider.tsx
 - https://github.com/jpudysz/react-native-unistyles/blob/v3.2.4/src/web/runtime.ts

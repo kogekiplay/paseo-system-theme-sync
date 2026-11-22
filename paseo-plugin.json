@@ -4,6 +4,6 @@
   "description": "Keep Paseo backgrounds and text in sync when macOS switches between light and dark appearance.",
   "media": [],
   "requirements": {
-    "paseo": ">=0.15.4 <0.17.0"
+    "paseo": ">=0.15.4 <0.18.0"
   }
 }

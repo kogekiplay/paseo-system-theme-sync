@@ -39,7 +39,7 @@ beforeEach(() => {
     308: {}, 310: {},
     179: { isServer: () => false, schemeToTheme: (name) => name, error: (message) => new Error(message) },
   };
-  // This verbatim module is identical in Paseo 0.15.4 and 0.16.0; see fixtures/PROVENANCE.md.
+  // See fixtures/PROVENANCE.md for the Paseo releases verified against this module.
   // Its only mocked dependencies here are enums, environment helpers, and DOM.
   vm.runInNewContext(readFileSync(new URL("./fixtures/paseo-0.15.4-runtime.txt", import.meta.url), "utf8"), {
     window: dom.window, document: dom.window.document,
@@ -80,7 +80,7 @@ function runtime(fixed) {
   return new Runtime(services);
 }
 
-describe("actual Paseo 0.15.4 / 0.16.0 runtime regression", () => {
+describe("actual Paseo runtime regression", () => {
   it.each([["light", "dark"], ["dark", "light"]])(
     "reproduces a stale root palette after macOS changes %s → %s, without plugins",
     async (initial, target) => {
