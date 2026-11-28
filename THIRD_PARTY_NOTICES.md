@@ -1,10 +1,14 @@
-# Third-party test fixture
+# Third-party test fixtures
 
-`tests/fixtures/paseo-0.15.4-runtime.txt` contains the web runtime class from
-`react-native-unistyles` 3.2.4, authored by Jacek Pudysz and distributed under
-the MIT license according to that npm package's metadata and README.
-It was extracted from the Paseo 0.15.4 application bundle and is used only by
-tests. It is not imported by the plugin's runtime entry.
+`tests/fixtures/paseo-0.15.4-runtime.txt` and `tests/fixtures/paseo-0.18.1-runtime.txt`
+contain the web runtime class from `react-native-unistyles` 3.2.4, authored by
+Jacek Pudysz and distributed under the MIT license according to that npm
+package's metadata and README.
+`tests/fixtures/paseo-0.15.4-runtime.txt` was extracted from the Paseo 0.15.4
+application bundle. `tests/fixtures/paseo-0.18.1-runtime.txt` was extracted from
+the Paseo 0.18.1 application bundle and includes Paseo's Apache-2.0 patch to
+`updateTheme` (`patches/react-native-unistyles+3.2.4.patch`). Both fixtures are
+used only by tests and are not imported by the plugin's runtime entry.
 
 Package: https://www.npmjs.com/package/react-native-unistyles/v/3.2.4
 

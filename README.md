@@ -18,7 +18,7 @@ paseo plugin install git:kogekiplay/paseo-system-theme-sync
 paseo plugin update paseo-system-theme-sync
 ```
 
-当前适配 Paseo `>=0.15.4 <0.18.0`，已核对 0.15.4、0.16.0 和 0.17.1。插件在桌面端和网页端运行；iOS、Android 原生客户端不执行 DOM 修复。固定主题和插件主题仍由 Paseo 控制。本插件不修改 macOS 设置，也不会刷新页面。
+当前适配 Paseo `>=0.15.4 <0.19.0`，已核对 0.15.4、0.16.0、0.17.1 和 0.18.1。插件在桌面端和网页端运行；iOS、Android 原生客户端不执行 DOM 修复。固定主题和插件主题仍由 Paseo 控制。本插件不修改 macOS 设置，也不会刷新页面。
 
 ## 开发与验证
 
@@ -28,7 +28,7 @@ npm run typecheck
 npm test
 ```
 
-测试直接执行安装包中提取的 Unistyles runtime，独立于其他已安装插件复现原问题，并验证双向系统切换、固定主题保留、设置写入时序和插件清理。0.16.0 和 0.17.1 的运行时与 0.15.4 的夹具逐字节一致，共用同一份回归测试。客户端入口使用 0.17.1 SDK 进行类型检查。测试夹具的来源与许可见 [PROVENANCE](tests/fixtures/PROVENANCE.md) 和 [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md)。
+测试直接执行安装包中提取的 Unistyles runtime，独立于其他已安装插件复现原问题，并验证双向系统切换、固定主题保留、设置写入时序和插件清理。0.15.4、0.16.0 和 0.17.1 的运行时逐字节一致，共用同一份夹具；0.18.1 因 Paseo 对 `updateTheme` 应用了补丁，保留独立夹具，回归测试同时覆盖 0.15.4–0.17.1 与 0.18.1。客户端入口使用 0.18.1 SDK 进行类型检查。测试夹具的来源与许可见 [PROVENANCE](tests/fixtures/PROVENANCE.md) 和 [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md)。
 
 人工验收必须保持 Paseo 为「系统」，实际切换 **macOS 的外观**，检查浅色到深色、深色到浅色以及切回应用后的表现。仅在 Paseo 内点击 Light/Dark 不能验证系统跟随问题。
 
