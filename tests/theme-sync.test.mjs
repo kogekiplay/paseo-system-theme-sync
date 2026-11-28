@@ -5,12 +5,28 @@ import { JSDOM } from "jsdom";
 import { install } from "../client/web";
 
 const key = "@paseo:app-settings";
+const sharedDependencies = {
+  166: { UnistyleDependency: { Theme: 0, ThemeName: 1, AdaptiveThemes: 2 } },
+  296: { ColorScheme: { Light: "light", Dark: "dark", Unspecified: "unknown" } },
+  179: { isServer: () => false, schemeToTheme: (name) => name, error: (message) => new Error(message) },
+};
+const runtimeFixtures = [
+  {
+    label: "Paseo 0.15.4–0.17.1",
+    file: "./fixtures/paseo-0.15.4-runtime.txt",
+    extraDependencies: { 308: {}, 310: {} },
+  },
+  {
+    label: "Paseo 0.18.1",
+    file: "./fixtures/paseo-0.18.1-runtime.txt",
+    extraDependencies: { 310: {}, 312: {} },
+  },
+];
 let dom;
 let scheme;
 let media;
 let controllers;
 let originalSetItem;
-let Runtime;
 
 beforeEach(() => {
   dom = new JSDOM("<!doctype html><html><body></body></html>", { url: "https://paseo.test" });
@@ -33,22 +49,6 @@ beforeEach(() => {
   vi.stubGlobal("window", dom.window);
   vi.stubGlobal("document", dom.window.document);
   vi.stubGlobal("MutationObserver", dom.window.MutationObserver);
-  const dependencies = {
-    166: { UnistyleDependency: { Theme: 0, ThemeName: 1, AdaptiveThemes: 2 } },
-    296: { ColorScheme: { Light: "light", Dark: "dark", Unspecified: "unknown" } },
-    308: {}, 310: {},
-    179: { isServer: () => false, schemeToTheme: (name) => name, error: (message) => new Error(message) },
-  };
-  // See fixtures/PROVENANCE.md for the Paseo releases verified against this module.
-  // Its only mocked dependencies here are enums, environment helpers, and DOM.
-  vm.runInNewContext(readFileSync(new URL("./fixtures/paseo-0.15.4-runtime.txt", import.meta.url), "utf8"), {
-    window: dom.window, document: dom.window.document,
-    __d(factory, _id, dependencyMap) {
-      const module = { exports: {} };
-      factory({}, (id) => dependencies[id], null, null, module, module.exports, dependencyMap);
-      Runtime = module.exports.UnistylesRuntime;
-    },
-  });
 });
 afterEach(() => {
   for (const controller of controllers) controller.dispose();
@@ -70,17 +70,36 @@ async function system(next) {
   for (const query of media.values()) query.fire();
   await settle();
 }
-function runtime(fixed) {
-  const services = {
-    state: { hasAdaptiveThemes: false, themeName: fixed, CSSVars: true },
-    listener: { emitChange() {}, emitChanges() {} },
-    shadowRegistry: { getScopedTheme: () => undefined },
-  };
-  document.documentElement.className = fixed;
-  return new Runtime(services);
+function loadRuntime(fixture) {
+  let Runtime;
+  const dependencies = { ...sharedDependencies, ...fixture.extraDependencies };
+  // See fixtures/PROVENANCE.md for the Paseo releases verified against these modules.
+  // Their only mocked dependencies here are enums, environment helpers, and DOM.
+  vm.runInNewContext(readFileSync(new URL(fixture.file, import.meta.url), "utf8"), {
+    window: dom.window, document: dom.window.document,
+    __d(factory, _id, dependencyMap) {
+      const module = { exports: {} };
+      factory({}, (id) => {
+        if (!(id in dependencies)) throw new Error(`Unexpected dependency id: ${id}`);
+        return dependencies[id];
+      }, null, null, module, module.exports, dependencyMap);
+      Runtime = module.exports.UnistylesRuntime;
+    },
+  });
+  return Runtime;
 }
 
-describe("actual Paseo runtime regression", () => {
+describe.each(runtimeFixtures)("actual Paseo runtime regression ($label)", (fixture) => {
+  function runtime(fixed) {
+    const Runtime = loadRuntime(fixture);
+    const services = {
+      state: { hasAdaptiveThemes: false, themeName: fixed, CSSVars: true },
+      listener: { emitChange() {}, emitChanges() {} },
+      shadowRegistry: { getScopedTheme: () => undefined },
+    };
+    document.documentElement.className = fixed;
+    return new Runtime(services);
+  }
   it.each([["light", "dark"], ["dark", "light"]])(
     "reproduces a stale root palette after macOS changes %s → %s, without plugins",
     async (initial, target) => {
